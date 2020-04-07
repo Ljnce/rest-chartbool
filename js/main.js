@@ -18,7 +18,7 @@ $.ajax({
         url: 'http://157.230.17.132:4014/sales',
         method: 'GET',
         success: function(data){
-            var meseSomma = {
+            var meseSomma = { //Prendo i valori in ordine e ci aggiungo i risultati corrispondenti
                 'gennaio': 0,
                 'febbraio': 0,
                 'marzo': 0,
@@ -46,25 +46,28 @@ $.ajax({
                     meseSomma[thisMonth] = 0; //Se non essite, cioè se è uguale a 0 gli do 0
                 }
                 meseSomma[thisMonth] += dato.amount;
-                console.log(meseSomma[thisMonth]);
-
+                //console.log(meseSomma[thisMonth]) ---> Mi trova tutti le somme dei signoli soggetti
             }
-
-                var labelsChart = [];
-                var dataChart = [];
-
-                for (var key in meseSomma) {
-                    labelsChart.push(key);
-                    dataChart.push(meseSomma[key])
-                }
-                laMiaSomma(labelsChart, dataChart)
+                valoriFinali(meseSomma)
         },
         error: function(){
             alert('errore')
         }
     });
 
+//Funzione per trovare  i valori finali
+function valoriFinali(meseSomma){
+    var labelsChart = [];
+    var dataChart = [];
 
+    for (var key in meseSomma) {
+        labelsChart.push(key);
+        dataChart.push(meseSomma[key])
+    }
+    laMiaSomma(labelsChart, dataChart)
+}
+
+//Assegno i valori finali trovati, alla mia CHART
 function laMiaSomma(labels, data){
     var ctx = $('#grafico');
     var chart = new Chart(ctx, {
