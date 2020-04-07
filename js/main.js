@@ -127,6 +127,12 @@ function laMiaSommaVenditori(labels2, data2){
             }],
 
             labels: labels2
-        }
+        },
+        options: {
+            title: {
+            display: true,
+            text: 'Guadagni di ogni singolo venditore (2017)'
+      }
+    }
     })
 };
