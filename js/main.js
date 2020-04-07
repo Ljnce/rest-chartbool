@@ -109,7 +109,7 @@ function valoriFinaliVenditori(venditeVenditore){
 
     for (var key in venditeVenditore) {
         labelsVenditoreChart.push(key);
-        dataVenditoreChart.push(venditeVenditore[key]);
+        dataVenditoreChart.push(Math.round(venditeVenditore[key] * 10 / 118.940)); //Circa un %
     }
     laMiaSommaVenditori(labelsVenditoreChart, dataVenditoreChart)
 };
