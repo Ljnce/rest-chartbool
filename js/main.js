@@ -17,7 +17,6 @@ $.ajax({
 
         url: 'http://157.230.17.132:4014/sales',
         method: 'GET',
-
         success: function(data){
             var meseSomma = {};
             var dati = data; // ho i miei dati
@@ -34,18 +33,18 @@ $.ajax({
                     meseSomma[thisMonth] = 0; //Se non essite, cioè se è uguale a 0 gli do 0
                 }
                 meseSomma[thisMonth] += dato.amount;
+
             }
 
                 var labelsChart = [];
                 var dataChart = [];
-
-                laMiaSomma(labelsChart, dataChart)
 
                 for (var key in meseSomma) {
                     console.log(key);
                     labelsChart.push(key);
                     dataChart.push(meseSomma[key])
                 }
+                laMiaSomma(labelsChart, dataChart)
         },
         error: function(){
             alert('errore')
