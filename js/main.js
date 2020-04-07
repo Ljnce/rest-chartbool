@@ -18,7 +18,20 @@ $.ajax({
         url: 'http://157.230.17.132:4014/sales',
         method: 'GET',
         success: function(data){
-            var meseSomma = {};
+            var meseSomma = {
+                'gennaio': 0,
+                'febbraio': 0,
+                'marzo': 0,
+                'aprile': 0,
+                'maggio': 0,
+                'giugno': 0,
+                'luglio': 0,
+                'agosto': 0,
+                'settembre': 0,
+                'ottobre': 0,
+                'novembre': 0,
+                'dicembre': 0
+            };
             var dati = data; // ho i miei dati
             for (var i = 0; i < dati.length; i++) {
                 var dato = dati[i] //estrapolo i singoli dati
@@ -33,6 +46,7 @@ $.ajax({
                     meseSomma[thisMonth] = 0; //Se non essite, cioè se è uguale a 0 gli do 0
                 }
                 meseSomma[thisMonth] += dato.amount;
+                console.log(meseSomma[thisMonth]);
 
             }
 
@@ -40,7 +54,6 @@ $.ajax({
                 var dataChart = [];
 
                 for (var key in meseSomma) {
-                    console.log(key);
                     labelsChart.push(key);
                     dataChart.push(meseSomma[key])
                 }
@@ -63,8 +76,8 @@ function laMiaSomma(labels, data){
             labels: labels,
             datasets: [{
                 label: 'Database incassi annuali 2018',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'orange',
+                borderColor: 'orange',
                 data: data
             }]
         },
