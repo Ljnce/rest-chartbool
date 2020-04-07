@@ -11,5 +11,9 @@ body{
 }
 
 .container{
-    width: 60%;
+    width: 50%;
+}
+
+.container2{
+    width: 50%;
 }
