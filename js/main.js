@@ -29,9 +29,9 @@ var meseSomma = { //Prendo i valori in ordine e ci aggiungo i risultati corrispo
     'dicembre': 0
 };
 
-var venditeVenditore = {} //Valore vuoto per i venditori
+var venditeVenditore = {}; //Valore vuoto per i venditori
 
-//Ajax
+//Ajax GET
 $.ajax({
         url: 'http://157.230.17.132:4014/sales',
         method: 'GET',
@@ -47,8 +47,8 @@ $.ajax({
 function costruttoreData(data){
     var dati = data; // ho i miei dati
     for (var i = 0; i < dati.length; i++) {
-        var dato = dati[i] //estrapolo i singoli dati
-        // console.log(dato.id); //Non mi serve in questo caso
+        var dato = dati[i]; //estrapolo i singoli dati
+        //console.log(dato.id); //Non mi serve in questo caso
         // console.log(dato.salesman); //Non mi serve in questo caso
         // console.log(dato.amount); //Mi interessa l'ammontare delle somme
         // console.log(dato.date); //Mi interessa la data, e troverò il mese
@@ -117,9 +117,10 @@ function valoriFinaliVenditori(venditeVenditore){
 
     for (var key in venditeVenditore) {
         labelsVenditoreChart.push(key);
-        dataVenditoreChart.push(Math.round(venditeVenditore[key] * 10 / 118.940)); //Circa un %
+        dataVenditoreChart.push((venditeVenditore[key])) //* 10 / 118.940)); //Circa un %
     }
     laMiaSommaVenditori(labelsVenditoreChart, dataVenditoreChart);
+    iMieiVenditori(labelsVenditoreChart);
 };
 
 //Assegno i valori finali trovati, alla mia CHART per i valori dei venditori
@@ -144,3 +145,39 @@ function laMiaSommaVenditori(labels2, data2){
     }
     })
 };
+
+
+//--------> MILESTONE 2 <-----------
+
+function iMieiVenditori(labelsVenditoreChart){
+    $('.seller-type').change(function(){ //I venditori nel mio select
+        var selectedSeller = $(this).val();
+        if (labelsVenditoreChart.includes(selectedSeller)) { //Se i miei venditori sono inclusi nel select
+            $('#press').click(function(){
+                var value = parseInt($('#value').val());
+                $('#value').val('');
+                operazione(selectedSeller, value);
+            });
+        }
+    });
+};
+
+//Ajax POST
+
+function operazione(sceltaVenditore, value){
+$.ajax({
+        url: 'http://157.230.17.132:4014/sales/',
+        method: 'POST',
+        data:{"salesman": sceltaVenditore, "amount": + (value)},
+        success: function(modify){
+            //var costruttore = costruttoreModify(modify);
+        },
+        error: function(){
+            alert('errore')
+        }
+    });
+};
+
+//function costruttoreModify(modify){
+
+//}
