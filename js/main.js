@@ -120,7 +120,6 @@ function valoriFinaliVenditori(venditeVenditore){
         dataVenditoreChart.push((venditeVenditore[key])) //* 10 / 118.940)); //Circa un %
     }
     laMiaSommaVenditori(labelsVenditoreChart, dataVenditoreChart);
-    //iMieiVenditori(labelsVenditoreChart);
 };
 
 //Assegno i valori finali trovati, alla mia CHART per i valori dei venditori
@@ -150,18 +149,18 @@ function laMiaSommaVenditori(labels2, data2){
 //--------> MILESTONE 2 <-----------
 
 //Confronto i miei venditori con il mio select, e poi gli assegno il valore da aggiungere
-//function iMieiVenditori(labelsVenditoreChart){
-    $('.seller-type').change(function(){ //I venditori nel mio select
-        var selectedSeller = $(this).val();
-            $('#press').click(function(){
-                var value = parseInt($('#value').val());
-                var date = parseInt($('#date').val());//Inserisco a loro questo nuovo valore con un click
-                $('#value').val('');
-                $('#date').val('');
-                operazione(selectedSeller, value, date);
-            });
+
+$('.seller-type').change(function(){ //I venditori nel mio select
+    var selectedSeller = $(this).val();
+    $('#press').click(function(){
+        var value = parseInt($('#value').val());
+        var date = parseInt($('#date').val());//Inserisco a loro questo nuovo valore con un click
+        $('#value').val('');
+        $('#date').val('');
+        operazione(selectedSeller, value, date);
     });
-//};
+});
+
 
 //Ajax POST
 function operazione(sceltaVenditore, value, date){
