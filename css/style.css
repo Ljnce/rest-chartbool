@@ -4,20 +4,35 @@
     box-sizing: border-box;
 }
 
-body{
+.container-primo{
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .container{
+    height: 500px;
+    width: 50%;
+}
+
+#grafico,
+#grafico-torta{
+    height: 200px;
+}
+
+.container-torta{
+    height: 500px;
     width: 50%;
 }
 
 .container2{
-    width: 50%;
+
 }
 
 .tasti{
-    width: 50%;
+
 }

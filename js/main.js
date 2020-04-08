@@ -149,12 +149,13 @@ function laMiaSommaVenditori(labels2, data2){
 
 //--------> MILESTONE 2 <-----------
 
+//Confronto i miei venditori con il mio select, e poi gli assegno il valore da aggiungere
 function iMieiVenditori(labelsVenditoreChart){
     $('.seller-type').change(function(){ //I venditori nel mio select
         var selectedSeller = $(this).val();
         if (labelsVenditoreChart.includes(selectedSeller)) { //Se i miei venditori sono inclusi nel select
             $('#press').click(function(){
-                var value = parseInt($('#value').val());
+                var value = parseInt($('#value').val()); //Inserisco a loro questo nuovo valore con un click
                 $('#value').val('');
                 operazione(selectedSeller, value);
             });
@@ -163,12 +164,11 @@ function iMieiVenditori(labelsVenditoreChart){
 };
 
 //Ajax POST
-
 function operazione(sceltaVenditore, value){
 $.ajax({
         url: 'http://157.230.17.132:4014/sales/',
         method: 'POST',
-        data:{"salesman": sceltaVenditore, "amount": + (value)},
+        data:{"salesman": sceltaVenditore, "amount": value},
         success: function(modify){
             //var costruttore = costruttoreModify(modify);
         },
@@ -178,6 +178,11 @@ $.ajax({
     });
 };
 
-//function costruttoreModify(modify){
-
-//}
+/*
+function costruttoreModify(modify){
+    $('.body').html('');
+    $('.container1').append('<canvas id="grafico"></canvas>');
+    $('.container2').append('<canvas id="grafico-torta"></canvas>');
+    getDataFromApi(querySales);
+};
+*/
