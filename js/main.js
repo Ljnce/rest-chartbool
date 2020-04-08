@@ -120,7 +120,7 @@ function valoriFinaliVenditori(venditeVenditore){
         dataVenditoreChart.push((venditeVenditore[key])) //* 10 / 118.940)); //Circa un %
     }
     laMiaSommaVenditori(labelsVenditoreChart, dataVenditoreChart);
-    iMieiVenditori(labelsVenditoreChart);
+    //iMieiVenditori(labelsVenditoreChart);
 };
 
 //Assegno i valori finali trovati, alla mia CHART per i valori dei venditori
@@ -150,25 +150,25 @@ function laMiaSommaVenditori(labels2, data2){
 //--------> MILESTONE 2 <-----------
 
 //Confronto i miei venditori con il mio select, e poi gli assegno il valore da aggiungere
-function iMieiVenditori(labelsVenditoreChart){
+//function iMieiVenditori(labelsVenditoreChart){
     $('.seller-type').change(function(){ //I venditori nel mio select
         var selectedSeller = $(this).val();
-        if (labelsVenditoreChart.includes(selectedSeller)) { //Se i miei venditori sono inclusi nel select
             $('#press').click(function(){
-                var value = parseInt($('#value').val()); //Inserisco a loro questo nuovo valore con un click
+                var value = parseInt($('#value').val());
+                var date = parseInt($('#date').val());//Inserisco a loro questo nuovo valore con un click
                 $('#value').val('');
-                operazione(selectedSeller, value);
+                $('#date').val('');
+                operazione(selectedSeller, value, date);
             });
-        }
     });
-};
+//};
 
 //Ajax POST
-function operazione(sceltaVenditore, value){
+function operazione(sceltaVenditore, value, date){
 $.ajax({
         url: 'http://157.230.17.132:4014/sales/',
         method: 'POST',
-        data:{"salesman": sceltaVenditore, "amount": value},
+        data:{"salesman": sceltaVenditore, "amount": value, "date": date},
         success: function(modify){
             //var costruttore = costruttoreModify(modify);
         },
