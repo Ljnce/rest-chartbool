@@ -74,12 +74,12 @@ function costruttoreData(data){
         //console.log(meseSomma[thisMonth]) ---> Mi trova tutti i valori dei signoli soggetti
     }
         valoriFinali(meseSomma) //--------> Porto fuori la mia variabile per ciclare 'for in ' mesi e vendite <---------
-        valoriFinaliVenditori(venditeVenditore) // ------> Porto fuori la mia variabile per ciclare 'for in ' venditori e vendite <--------
+        valoriFinaliVenditori(venditeVenditore, valoreTotale) // ------> Porto fuori la mia variabile per ciclare 'for in ' venditori e vendite <--------
 };
 
 //Ciclo il mio valore totale per avere la %
 function percent(totaleDati){
-    var fatturato = 0;
+    var fatturato = 0; //Variabile vuota pari a 0, dove aggiungero il risulato e riporterò fuori con il return
     for (var i = 0; i < totaleDati.length; i++) {
         var datoSingolo = totaleDati[i];
         var valoreDato = datoSingolo.amount;
@@ -128,13 +128,14 @@ function laMiaSomma(labels, data){
 
 
 //Funzione per trovare i valori dei signoli venditori:
-function valoriFinaliVenditori(venditeVenditore){
+function valoriFinaliVenditori(venditeVenditore, valoreTotale){
     var labelsVenditoreChart = [];
     var dataVenditoreChart = [];
 
     for (var key in venditeVenditore) {
         labelsVenditoreChart.push(key);
-        dataVenditoreChart.push((venditeVenditore[key])); //* 10 / 118.940); //Circa un %
+        var percentualeVendite = ((venditeVenditore[key] / valoreTotale)* 100).toFixed(2); //Calcolo il valore in %
+        dataVenditoreChart.push(percentualeVendite); //Pusho il valore in %
     }
     laMiaSommaVenditori(labelsVenditoreChart, dataVenditoreChart);
 };
