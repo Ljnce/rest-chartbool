@@ -4,9 +4,12 @@
     box-sizing: border-box;
 }
 
+.container-big{
+    min-height: 100vh;
+}
+
 .container-primo{
-    width: 100vw;
-    height: 100vh;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,25 +17,26 @@
     flex-wrap: wrap;
 }
 
-.container{
-    height: 500px;
-    width: 50%;
-}
-
 #grafico,
 #grafico-torta{
-    height: 200px;
+    height: 250px;
 }
 
 .container-torta{
-    height: 500px;
-    width: 50%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
-.container2{
-
-}
 
 .tasti{
-
+    height: 100px;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ededed;
 }

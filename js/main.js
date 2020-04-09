@@ -55,6 +55,8 @@ function costruttoreData(data){
     for (var i = 0; i < dati.length; i++) {
         var dato = dati[i]; //estrapolo i singoli dati
         var valore = parseInt(dato.amount); //Trovo i valori
+        var valoreTotale = percent(dati); // Trovo il valore totale con una funzione, per la %.
+        console.log(valoreTotale);
         var venditore = dato.salesman; //Trovo i nomi dei venditori
         var mese = dato.date; // Trovo le date
         var thisMonth = moment(mese, 'DD/MM/YYYY').format("MMMM"); //Trovo solo i MESI dalle date, estrapolo da mese (DD/MM/YYYY), solo i nomi dei mesi .format('MMMM')
@@ -75,7 +77,16 @@ function costruttoreData(data){
         valoriFinaliVenditori(venditeVenditore) // ------> Porto fuori la mia variabile per ciclare 'for in ' venditori e vendite <--------
 };
 
-
+//Ciclo il mio valore totale per avere la %
+function percent(totaleDati){
+    var fatturato = 0;
+    for (var i = 0; i < totaleDati.length; i++) {
+        var datoSingolo = totaleDati[i];
+        var valoreDato = datoSingolo.amount;
+        fatturato += parseInt(valoreDato);
+    }
+    return fatturato;
+}
 
 //---------------> MESI E VENDITE <-----------------
 
@@ -103,7 +114,7 @@ function laMiaSomma(labels, data){
         data: {
             labels: labels, //riporto il mio valore del mese
             datasets: [{
-                label: 'Database incassi annuali 2018',
+                label: 'Database incassi annuali 2017',
                 backgroundColor: 'orange',
                 borderColor: 'orange',
                 data: data //riporto il mio valore dei valori
@@ -137,7 +148,7 @@ function laMiaSommaVenditori(labels2, data2){
         data: {
             datasets: [{
                 data: data2,
-                backgroundColor: ['red', 'green', 'blue', 'yellow']
+                backgroundColor: ['red', 'lightgreen', 'lightblue', 'yellow']
             }],
 
             labels: labels2
@@ -168,10 +179,9 @@ $('#press').click(function(){
     var selectedSeller = $(".seller-type").val();// Il valore (nome venditore) di selected seller
     notSelectedSeller(selectedSeller); //Controllo sul venditore scelto
     var value = $('#value').val(); //La cifra che inserisco
-    notValue(value); //Controllo sul valore inserito
+    //notValue(value); //Controllo sul valore inserito
     var date = $('#date').val();//La data che che scelgo e sotto la traformo
     var dataForma = moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY'); //Trasformo data che è in YYYY-MM-DD, in DD/MM/YYYY così che sia leggibile dal sistema
-    notDate(dataForma); //Controllo sulla data
     $('#value').val('');
     $('#date').val('');
     operazione(selectedSeller, value, dataForma);
@@ -195,9 +205,8 @@ function operazione(sceltaVenditore, value, date){
 
 
 function costruttoreModify(modify){
-    $('.body').html('');
-    $('.container1').append('<canvas id="grafico"></canvas>');
-    $('.container2').append('<canvas id="grafico-torta"></canvas>');
+    $('.container-primo').append('<canvas id="grafico"></canvas>');
+    $('.container-torta').append('<canvas id="grafico-torta"></canvas>');
     stampaGrafici();
 };
 
@@ -212,9 +221,10 @@ function notSelectedSeller(value){
     return value;
 };
 
+/*
 //Se non si inserisce nessuna cifra:
 function notValue(valore) {
-    if (valore.lenght != 0) {
+    if (valore == "") {
         alert('Inserisci una cifra');
     }
     return valore;
@@ -227,3 +237,4 @@ function notDate(data){
     }
     return data;
 }
+*/

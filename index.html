@@ -14,30 +14,33 @@
     </head>
     <body>
 
+    <div class="container-big">
         <div class="container-primo">
             <div class="container">
                 <canvas id="grafico"></canvas>
             </div>
-            <div class="container-torta">
-                <div class="container2">
-                    <canvas id="grafico-torta"></canvas>
-                </div>
+        </div>
 
-                <div class="tasti">
-                    <input id="value" type="number "placeholder="Inserisci un valore">
-
-                    <input id="date" type="date" value="2017-01-01" max="2017-12-31">
-                    <button id="press">Inserisci</button>
-                    <select class="seller-type" name="">
-                        <option value="scegli">Scegli un venditore</option>
-                        <option value="Marco">Marco</option>
-                        <option value="Giuseppe">Giuseppe</option>
-                        <option value="Riccardo">Riccardo</option>
-                        <option value="Roberto">Roberto</option>
-                    </select>
-                </div>
+        <div class="container-torta">
+            <div class="container2">
+                <canvas id="grafico-torta"></canvas>
             </div>
         </div>
+
+        <div class="tasti">
+            <input id="value" type="number "placeholder="Inserisci un valore">
+            <input id="date" type="date" value="2017-01-01" max="2017-12-31">
+            <select class="seller-type" name="">
+                <option value="scegli">Scegli un venditore</option>
+                <option value="Marco">Marco</option>
+                <option value="Giuseppe">Giuseppe</option>
+                <option value="Riccardo">Riccardo</option>
+                <option value="Roberto">Roberto</option>
+            </select>
+            <button id="press">Inserisci</button>
+        </div>
+    </div>
+
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="js/main.js" charset="utf-8"></script>
