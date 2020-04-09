@@ -50,25 +50,29 @@ function costruttoreData(data){
         var dato = dati[i]; //estrapolo i singoli dati
         //console.log(dato.id); //Non mi serve in questo caso
         // console.log(dato.salesman); //Non mi serve in questo caso
-        // console.log(dato.amount); //Mi interessa l'ammontare delle somme
+        var valore = parseInt(dato.amount);
         // console.log(dato.date); //Mi interessa la data, e troverò il mese
         var venditore = dato.salesman;
         var mese = dato.date; // Mi creo la variabile in cui estrapolo la data
         var thisMonth = moment(mese, 'DD/MM/YYYY').format("MMMM"); //Trovo il mese che mi servirà per la somma
         //console.log(thisMonth);
+        var thisNumberMonth = moment(mese, 'DD/MM/YYYY').format("M") % 3;// Trovo il mese numerato
+        //console.log(thisNumberMonth);
         if (meseSomma[thisMonth] === undefined) { // MESI E VENDITE
             meseSomma[thisMonth] = 0;
         }
-        meseSomma[thisMonth] += dato.amount;
+        meseSomma[thisMonth] += valore;
+
         if (venditeVenditore[venditore] === undefined) { // VENDITORI E VENDITE
             venditeVenditore[venditore] = 0;
         }
-        venditeVenditore[venditore] += dato.amount;
+        venditeVenditore[venditore] += valore;
         //console.log(meseSomma[thisMonth]) ---> Mi trova tutti i valori dei signoli soggetti
     }
         valoriFinali(meseSomma) //mesi e vendtiori
         valoriFinaliVenditori(venditeVenditore) //venditori e fatturato
 };
+
 
 
 //---------------> MESI E VENDITE <-----------------
@@ -154,7 +158,7 @@ $('.seller-type').change(function(){ //I venditori nel mio select
     var selectedSeller = $(this).val();
     $('#press').click(function(){
         var value = parseInt($('#value').val());
-        var date = parseInt($('#date').val());//Inserisco a loro questo nuovo valore con un click
+        var date = parseInt($('#date').val());//Inserisco a loro questo nuovo valore con un clicK
         $('#value').val('');
         $('#date').val('');
         operazione(selectedSeller, value, date);
