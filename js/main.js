@@ -1,5 +1,3 @@
-//Chiamata Ajax per richiamre i valori dell'API
-
 // Gennaio: tot amount
 // Febbraio:  tot amount
 // Marzo:  tot amount
@@ -23,7 +21,7 @@ $.ajax({
         url: baseUrl,
         method: 'GET',
         success: function(data){
-            var costruttore = costruttoreData(data);
+            costruttoreData(data);
         },
         error: function(){
             alert('errore')
@@ -35,7 +33,7 @@ $.ajax({
 function costruttoreData(data){
     //Creo le mie 2 variabili vuote che poi andrò a riempire
 
-    var meseSomma = { //Prendo i valori in ordine e ci aggiungo i risultati corrispondenti
+    var meseSomma = {
         'gennaio': 0,
         'febbraio': 0,
         'marzo': 0,
@@ -48,7 +46,7 @@ function costruttoreData(data){
         'ottobre': 0,
         'novembre': 0,
         'dicembre': 0
-    };
+    }; //Prendo i valori in ordine e ci aggiungo i risultati corrispondenti
 
     var venditeVenditore = {}; //Valore vuoto per i venditori
 
@@ -125,7 +123,7 @@ function valoriFinaliVenditori(venditeVenditore){
 
     for (var key in venditeVenditore) {
         labelsVenditoreChart.push(key);
-        dataVenditoreChart.push((venditeVenditore[key])) //* 10 / 118.940)); //Circa un %
+        dataVenditoreChart.push((venditeVenditore[key])); //* 10 / 118.940); //Circa un %
     }
     laMiaSommaVenditori(labelsVenditoreChart, dataVenditoreChart);
 };
@@ -149,7 +147,7 @@ function laMiaSommaVenditori(labels2, data2){
             display: true,
             text: 'Guadagni di ogni singolo venditore (2017)'
       },
-      responsive: true,
+        responsive: true,
                 tooltips: {
                   callbacks: {
                     label: function(tooltipItem, data) {
@@ -168,18 +166,21 @@ function laMiaSommaVenditori(labels2, data2){
 
 $('#press').click(function(){
     var selectedSeller = $(".seller-type").val();// Il valore (nome venditore) di selected seller
+    notSelectedSeller(selectedSeller); //Controllo sul venditore scelto
     var value = $('#value').val(); //La cifra che inserisco
+    notValue(value); //Controllo sul valore inserito
     var date = $('#date').val();//La data che che scelgo e sotto la traformo
     var dataForma = moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY'); //Trasformo data che è in YYYY-MM-DD, in DD/MM/YYYY così che sia leggibile dal sistema
+    notDate(dataForma); //Controllo sulla data
     $('#value').val('');
     $('#date').val('');
     operazione(selectedSeller, value, dataForma);
-    });
+});
 
 
 //Ajax POST
 function operazione(sceltaVenditore, value, date){
-$.ajax({
+    $.ajax({
         url: baseUrl,
         method: 'POST',
         data:{"salesman": sceltaVenditore, "amount": value, "date": date},
@@ -199,3 +200,30 @@ function costruttoreModify(modify){
     $('.container2').append('<canvas id="grafico-torta"></canvas>');
     stampaGrafici();
 };
+
+
+//-------> CONTROLLI SUGLI INPUT <---------
+
+//Se non si sceglie nessun venditore:
+function notSelectedSeller(value){
+    if (value == 'scegli') {
+        alert('Scegli un venditore');
+    }
+    return value;
+};
+
+//Se non si inserisce nessuna cifra:
+function notValue(valore) {
+    if (valore.lenght != 0) {
+        alert('Inserisci una cifra');
+    }
+    return valore;
+};
+
+//Data non disponile :
+function notDate(data){
+    if (data == "01/01/2017") {
+        alert('oooo')
+    }
+    return data;
+}
