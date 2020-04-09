@@ -13,27 +13,14 @@
 // Novembre:  tot amount
 // Dicembre:  tot amount
 
-//Le mie 2 variabili vuote che poi andrò a riempire
-var meseSomma = { //Prendo i valori in ordine e ci aggiungo i risultati corrispondenti
-    'gennaio': 0,
-    'febbraio': 0,
-    'marzo': 0,
-    'aprile': 0,
-    'maggio': 0,
-    'giugno': 0,
-    'luglio': 0,
-    'agosto': 0,
-    'settembre': 0,
-    'ottobre': 0,
-    'novembre': 0,
-    'dicembre': 0
-};
+//--------> TROVO IL MIO URL DI BASE<---------
+var baseUrl = 'http://157.230.17.132:4014/sales';
+stampaGrafici();
 
-var venditeVenditore = {}; //Valore vuoto per i venditori
-
-//Ajax GET
+//---------> CICLO AJAX 'GET' DEL MIO LINK <---------
+function stampaGrafici(){
 $.ajax({
-        url: 'http://157.230.17.132:4014/sales',
+        url: baseUrl,
         method: 'GET',
         success: function(data){
             var costruttore = costruttoreData(data);
@@ -42,35 +29,52 @@ $.ajax({
             alert('errore')
         }
     });
+};
 
-//Funzione per contenuto ajax
+//-------> ESTRAPOLO I CONTENUTI CHE MI SERVONO DALL'AJAX <----------
 function costruttoreData(data){
+    //Creo le mie 2 variabili vuote che poi andrò a riempire
+
+    var meseSomma = { //Prendo i valori in ordine e ci aggiungo i risultati corrispondenti
+        'gennaio': 0,
+        'febbraio': 0,
+        'marzo': 0,
+        'aprile': 0,
+        'maggio': 0,
+        'giugno': 0,
+        'luglio': 0,
+        'agosto': 0,
+        'settembre': 0,
+        'ottobre': 0,
+        'novembre': 0,
+        'dicembre': 0
+    };
+
+    var venditeVenditore = {}; //Valore vuoto per i venditori
+
+    //Estrapolo da data i valori che mi servono per le miei 2 variabili vuote
     var dati = data; // ho i miei dati
     for (var i = 0; i < dati.length; i++) {
         var dato = dati[i]; //estrapolo i singoli dati
-        //console.log(dato.id); //Non mi serve in questo caso
-        // console.log(dato.salesman); //Non mi serve in questo caso
-        var valore = parseInt(dato.amount);
-        // console.log(dato.date); //Mi interessa la data, e troverò il mese
-        var venditore = dato.salesman;
-        var mese = dato.date; // Mi creo la variabile in cui estrapolo la data
-        var thisMonth = moment(mese, 'DD/MM/YYYY').format("MMMM"); //Trovo il mese che mi servirà per la somma
-        //console.log(thisMonth);
-        var thisNumberMonth = moment(mese, 'DD/MM/YYYY').format("M") % 3;// Trovo il mese numerato
-        //console.log(thisNumberMonth);
-        if (meseSomma[thisMonth] === undefined) { // MESI E VENDITE
-            meseSomma[thisMonth] = 0;
-        }
-        meseSomma[thisMonth] += valore;
+        var valore = parseInt(dato.amount); //Trovo i valori
+        var venditore = dato.salesman; //Trovo i nomi dei venditori
+        var mese = dato.date; // Trovo le date
+        var thisMonth = moment(mese, 'DD/MM/YYYY').format("MMMM"); //Trovo solo i MESI dalle date, estrapolo da mese (DD/MM/YYYY), solo i nomi dei mesi .format('MMMM')
 
-        if (venditeVenditore[venditore] === undefined) { // VENDITORI E VENDITE
-            venditeVenditore[venditore] = 0;
+        //var thisNumberMonth = moment(mese, 'DD/MM/YYYY').format("M") % 3;// Trovo il mese numerato
+
+        //Mesi e vendite
+        meseSomma[thisMonth] += valore; //ogni volta sovrascrivo in ordine e sommo con += tutti i valori
+
+        //Venditori e vendite
+        if (venditeVenditore[venditore] === undefined) { // Se === a indefinito, allora....
+            venditeVenditore[venditore] = 0; //il valore sarà pari a 0, quindi lo creo per poi fare in modo che si riempia dei valori
         }
         venditeVenditore[venditore] += valore;
         //console.log(meseSomma[thisMonth]) ---> Mi trova tutti i valori dei signoli soggetti
     }
-        valoriFinali(meseSomma) //mesi e vendtiori
-        valoriFinaliVenditori(venditeVenditore) //venditori e fatturato
+        valoriFinali(meseSomma) //--------> Porto fuori la mia variabile per ciclare 'for in ' mesi e vendite <---------
+        valoriFinaliVenditori(venditeVenditore) // ------> Porto fuori la mia variabile per ciclare 'for in ' venditori e vendite <--------
 };
 
 
@@ -144,8 +148,16 @@ function laMiaSommaVenditori(labels2, data2){
             title: {
             display: true,
             text: 'Guadagni di ogni singolo venditore (2017)'
-      }
-    }
+      },
+      responsive: true,
+                tooltips: {
+                  callbacks: {
+                    label: function(tooltipItem, data) {
+                      return data['labels'][tooltipItem['index']] + ': ' + data['datasets'][0]['data'][tooltipItem['index']] + '%';
+                    }
+                  }
+              },
+        }
     })
 };
 
@@ -154,26 +166,25 @@ function laMiaSommaVenditori(labels2, data2){
 
 //Confronto i miei venditori con il mio select, e poi gli assegno il valore da aggiungere
 
-$('.seller-type').change(function(){ //I venditori nel mio select
-    var selectedSeller = $(this).val();
-    $('#press').click(function(){
-        var value = parseInt($('#value').val());
-        var date = parseInt($('#date').val());//Inserisco a loro questo nuovo valore con un clicK
-        $('#value').val('');
-        $('#date').val('');
-        operazione(selectedSeller, value, date);
+$('#press').click(function(){
+    var selectedSeller = $(".seller-type").val();// Il valore (nome venditore) di selected seller
+    var value = $('#value').val(); //La cifra che inserisco
+    var date = $('#date').val();//La data che che scelgo e sotto la traformo
+    var dataForma = moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY'); //Trasformo data che è in YYYY-MM-DD, in DD/MM/YYYY così che sia leggibile dal sistema
+    $('#value').val('');
+    $('#date').val('');
+    operazione(selectedSeller, value, dataForma);
     });
-});
 
 
 //Ajax POST
 function operazione(sceltaVenditore, value, date){
 $.ajax({
-        url: 'http://157.230.17.132:4014/sales/',
+        url: baseUrl,
         method: 'POST',
         data:{"salesman": sceltaVenditore, "amount": value, "date": date},
         success: function(modify){
-            //var costruttore = costruttoreModify(modify);
+            var costruttore = costruttoreModify(modify);
         },
         error: function(){
             alert('errore')
@@ -181,11 +192,10 @@ $.ajax({
     });
 };
 
-/*
+
 function costruttoreModify(modify){
     $('.body').html('');
     $('.container1').append('<canvas id="grafico"></canvas>');
     $('.container2').append('<canvas id="grafico-torta"></canvas>');
-    getDataFromApi(querySales);
+    stampaGrafici();
 };
-*/
