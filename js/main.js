@@ -236,8 +236,9 @@ $('#press').click(function(){
     var selectedSeller = $(".seller-type").val();// Il valore (nome venditore) di selected seller
     notSelectedSeller(selectedSeller); //Controllo sul venditore scelto
     var value = $('#value').val(); //La cifra che inserisco
-    notValue(value); //Controllo sul valore inserito
+    //notValue(value); //Controllo sul valore inserito
     var date = $('#date').val();//La data che che scelgo e sotto la traformo
+    wrongDate(date) // Controllo su data < o > 2017
     var dataForma = moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY'); //Trasformo data che è in YYYY-MM-DD, in DD/MM/YYYY così che sia leggibile dal sistema
     $('#value').val('');
     $('#date').val('');
@@ -279,7 +280,7 @@ function notSelectedSeller(value){
     return value;
 };
 
-
+/*
 //Se non si inserisce nessuna cifra:
 function notValue(valore) {
     if (valore.lenght == undefined) {
@@ -287,13 +288,15 @@ function notValue(valore) {
     }
     return valore;
 };
-
-/*
-//Data non disponile :
-function notDate(data){
-    if (data == "01/01/2017") {
-        alert('oooo')
-    }
-    return data;
-}
 */
+
+//Data non disponile :
+function wrongDate(date){
+    var year = parseInt(moment(date, "YYYY-MM-DD").format('YYYY')); //Trovo l'anno
+    if (year < 2017) {
+        alert('Anno inserito non valido')
+    } else if (year > 2017) {
+        alert('Anno inserito non valido')
+    }
+    return year;
+}
