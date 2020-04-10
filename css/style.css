@@ -36,7 +36,8 @@
 
 #grafico,
 #grafico-torta,
-#grafico-bar{
+#grafico-bar,
+#grafico-polar{
     height: 250px;
 }
 
@@ -62,6 +63,16 @@
     flex-wrap: wrap;
     border: 1px solid #ededed;
     border-style: hidden solid hidden hidden;
+}
+
+.container-polar{
+    height: 300px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .tasti{

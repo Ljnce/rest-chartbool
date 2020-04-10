@@ -41,6 +41,9 @@ function costruttoreData(data){
     var quarter = quarterData(data); //Mi faccio tornare i valori giusti sulla mia variabile quarter
     graficoQuarter(quarter); //Richiamo la varibile quarter con i miei valori, per poi ciclarla in for in
 
+    var polar = polarData(data);
+    pushPolarChart(polar);
+
     var valoreTotale = percent(data); // Trovo il valore totale con una funzione, per la %.
     console.log(valoreTotale);
 
@@ -225,6 +228,59 @@ function stampaGraficoQuarter(labelQ, dataQ){
             text: 'Fatturato per quarter'
         }
     }
+    })
+};
+
+
+//--------> GRAFIO POLAR CON VENDITE DEI VENDITORI <-------
+
+//Trovo i miei dati tramite la variabile polarMix
+function polarData(iMieiDati){
+    var polarMix = {};
+    for (var i = 0; i < iMieiDati.length; i++) {
+        var singoloDato = iMieiDati[i];
+        var venditoriPolar = singoloDato.salesman;
+        var cifrePolar = singoloDato.amount;
+        if (polarMix[venditoriPolar] === undefined) {
+            polarMix[venditoriPolar] = 0;
+        }
+        polarMix[venditoriPolar] += parseInt(cifrePolar)
+    }
+    return polarMix;
+}
+
+//Trovo i valori da pushare nell'array per dargli in pasto al grafico che li leggerà
+function pushPolarChart(polarValue){
+    var labelPolar = [];
+    var dataPolar =[];
+
+    for (var key in polarValue) {
+        labelPolar.push(key);
+        dataPolar.push(polarValue[key]);
+    }
+    polarChartValue(labelPolar, dataPolar)
+}
+
+//Creo il mio grafico POLAR
+function polarChartValue(labelP, dataP){
+    var ctx = $('#grafico-polar');
+    var chart = new Chart(ctx, {
+
+        type: 'polarArea',
+        data: {
+            datasets: [{
+                data: dataP,
+                backgroundColor: ['red', 'blue', 'orange', 'pink']
+            }],
+
+            labels: labelP
+        },
+        options: {
+            title: {
+            display: true,
+            text: 'Guadagni singoli venditori'
+            },
+        }
     })
 };
 
