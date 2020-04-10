@@ -38,9 +38,8 @@ function costruttoreData(data){
 
     var venditeVenditore = {}; //Valore vuoto per i venditori
 
-    var quarter = quarterData(data);
-    console.log(quarter);
-    graficoQuarter(quarter);
+    var quarter = quarterData(data); //Mi faccio tornare i valori giusti sulla mia variabile quarter
+    graficoQuarter(quarter); //Richiamo la varibile quarter con i miei valori, per poi ciclarla in for in
 
     var valoreTotale = percent(data); // Trovo il valore totale con una funzione, per la %.
     console.log(valoreTotale);
@@ -91,7 +90,6 @@ function quarterData(ciclo){
         'q3':0,
         'q4':0
     }; //Grafico 3
-    console.log(quarterMonth['q1']);
     for (var i = 0; i < ciclo.length; i++) {
         var cicli = ciclo[i];
         var valoreDato = cicli.amount;
@@ -151,17 +149,18 @@ function laMiaSomma(labels, data){
 function valoriFinaliVenditori(venditeVenditore, valoreTotale){
     var labelsVenditoreChart = [];
     var dataVenditoreChart = [];
+    var backgroundColor = ['red', 'lightgreen', 'lightblue', 'yellow']
 
     for (var key in venditeVenditore) {
         labelsVenditoreChart.push(key);
         var percentualeVendite = ((venditeVenditore[key] / valoreTotale)* 100).toFixed(2); //Calcolo il valore in %
         dataVenditoreChart.push(percentualeVendite); //Pusho il valore in %
     }
-    laMiaSommaVenditori(labelsVenditoreChart, dataVenditoreChart);
+    laMiaSommaVenditori(labelsVenditoreChart, dataVenditoreChart, backgroundColor);
 };
 
 //Assegno i valori finali trovati, alla mia CHART per i valori dei venditori
-function laMiaSommaVenditori(labels2, data2){
+function laMiaSommaVenditori(labels2, data2, bkColor){
     var ctx = $('#grafico-torta');
     var chart = new Chart(ctx, {
 
@@ -169,7 +168,7 @@ function laMiaSommaVenditori(labels2, data2){
         data: {
             datasets: [{
                 data: data2,
-                backgroundColor: ['red', 'lightgreen', 'lightblue', 'yellow']
+                backgroundColor: bkColor
             }],
 
             labels: labels2
@@ -237,7 +236,7 @@ $('#press').click(function(){
     var selectedSeller = $(".seller-type").val();// Il valore (nome venditore) di selected seller
     notSelectedSeller(selectedSeller); //Controllo sul venditore scelto
     var value = $('#value').val(); //La cifra che inserisco
-    //notValue(value); //Controllo sul valore inserito
+    notValue(value); //Controllo sul valore inserito
     var date = $('#date').val();//La data che che scelgo e sotto la traformo
     var dataForma = moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY'); //Trasformo data che è in YYYY-MM-DD, in DD/MM/YYYY così che sia leggibile dal sistema
     $('#value').val('');
@@ -280,15 +279,16 @@ function notSelectedSeller(value){
     return value;
 };
 
-/*
+
 //Se non si inserisce nessuna cifra:
 function notValue(valore) {
-    if (valore == "") {
+    if (valore.lenght == undefined) {
         alert('Inserisci una cifra');
     }
     return valore;
 };
 
+/*
 //Data non disponile :
 function notDate(data){
     if (data == "01/01/2017") {
@@ -297,41 +297,3 @@ function notDate(data){
     return data;
 }
 */
-
-
-// --------> VENDITE IN QUARTER (MILESTONE 3)<--------
-
-//Funzione per assegnare i valori dei singoli quarter
-function graficoQuarter(variabileQuarti){
-    var labelQuarter = [];
-    var dataQuarter = [];
-
-    for (var key in variabileQuarti) {
-        labelQuarter.push(key);
-        dataQuarter.push(variabileQuarti[key]);
-    }
-    stampaGraficoQuarter(labelQuarter, dataQuarter);
-};
-
-//Assegno i valori finali trovati, alla mia CHART per i valori dei quarter
-function stampaGraficoQuarter(labelQ, dataQ){
-    var ctx = $('#grafico-bar');
-    var chart = new Chart(ctx, {
-
-        type: 'bar',
-        data: {
-            datasets: [{
-                data: dataQ,
-                backgroundColor: ['lightblue', 'lightblue', 'lightblue', 'lightblue']
-            }],
-
-            labels: labelQ
-        },
-        options: {
-            title: {
-            display: true,
-            text: 'Fatturato per quarter'
-        }
-    }
-    })
-};
