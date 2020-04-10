@@ -17,14 +17,14 @@ stampaGrafici();
 
 //---------> CICLO AJAX 'GET' DEL MIO LINK <---------
 function stampaGrafici(){
-$.ajax({
+    $.ajax({
         url: baseUrl,
         method: 'GET',
         success: function(data){
             costruttoreData(data);
         },
         error: function(){
-            alert('errore')
+            alert('errore');
         }
     });
 };
@@ -50,14 +50,20 @@ function costruttoreData(data){
 
     var venditeVenditore = {}; //Valore vuoto per i venditori
 
+    var quarter = quarterData(data);
+    console.log(quarter);
+    graficoQuarter(quarter);
+
+    var valoreTotale = percent(data); // Trovo il valore totale con una funzione, per la %.
+    console.log(valoreTotale);
+
     //Estrapolo da data i valori che mi servono per le miei 2 variabili vuote
     var dati = data; // ho i miei dati
     for (var i = 0; i < dati.length; i++) {
         var dato = dati[i]; //estrapolo i singoli dati
         var valore = parseInt(dato.amount); //Trovo i valori
-        var valoreTotale = percent(dati); // Trovo il valore totale con una funzione, per la %.
-        console.log(valoreTotale);
         var venditore = dato.salesman; //Trovo i nomi dei venditori
+
         var mese = dato.date; // Trovo le date
         var thisMonth = moment(mese, 'DD/MM/YYYY').format("MMMM"); //Trovo solo i MESI dalle date, estrapolo da mese (DD/MM/YYYY), solo i nomi dei mesi .format('MMMM')
 
@@ -88,8 +94,35 @@ function percent(totaleDati){
     return fatturato;
 }
 
-//---------------> MESI E VENDITE <-----------------
 
+//Ciclo per trovare i quarter
+function quarterData(ciclo){
+    var quarterMonth = {
+        'q1':0,
+        'q2':0,
+        'q3':0,
+        'q4':0
+    }; //Grafico 3
+    console.log(quarterMonth['q1']);
+    for (var i = 0; i < ciclo.length; i++) {
+        var cicli = ciclo[i];
+        var valoreDato = cicli.amount;
+        var meseQ = cicli.date;
+        var thisQuarterMonth = moment(meseQ, 'DD/MM/YYYY').format("M");
+        if (thisQuarterMonth <= 3) {
+            quarterMonth['q1'] += parseInt(valoreDato);
+        } else if (thisQuarterMonth > 3 && thisQuarterMonth <= 6)  {
+            quarterMonth['q2'] += parseInt(valoreDato);
+        } else if (thisQuarterMonth > 6 && thisQuarterMonth <= 9)  {
+            quarterMonth['q3'] += parseInt(valoreDato);
+        } else if (thisQuarterMonth > 9 && thisQuarterMonth <= 12)  {
+            quarterMonth['q4'] += parseInt(valoreDato);
+        }
+    }
+    return quarterMonth;
+}
+
+//---------------> MESI E VENDITE <-----------------
 
 //Funzione per trovare  i valori finali
 function valoriFinali(meseSomma){
@@ -102,7 +135,6 @@ function valoriFinali(meseSomma){
     }
     laMiaSomma(labelsChart, dataChart);
 };
-
 
 //Assegno i valori finali trovati, alla mia CHART per i valori mensili
 function laMiaSomma(labels, data){
@@ -125,7 +157,6 @@ function laMiaSomma(labels, data){
 
 
 //---------------> VENDITORI E VENDITE <-----------------
-
 
 //Funzione per trovare i valori dei signoli venditori:
 function valoriFinaliVenditori(venditeVenditore, valoreTotale){
@@ -158,18 +189,19 @@ function laMiaSommaVenditori(labels2, data2){
             title: {
             display: true,
             text: 'Guadagni di ogni singolo venditore (2017)'
-      },
+            },
         responsive: true,
                 tooltips: {
                   callbacks: {
                     label: function(tooltipItem, data) {
                       return data['labels'][tooltipItem['index']] + ': ' + data['datasets'][0]['data'][tooltipItem['index']] + '%';
                     }
-                  }
-              },
+                }
+            },
         }
     })
 };
+
 
 
 //--------> MILESTONE 2 <-----------
@@ -206,8 +238,8 @@ function operazione(sceltaVenditore, value, date){
 
 
 function costruttoreModify(modify){
-    $('.container-primo').append('<canvas id="grafico"></canvas>');
-    $('.container-torta').append('<canvas id="grafico-torta"></canvas>');
+    $('#grafico').replaceWith('<canvas id="grafico"></canvas>');
+    $('#grafico-torta').replaceWith('<canvas id="grafico-torta"></canvas>');
     stampaGrafici();
 };
 
@@ -239,3 +271,23 @@ function notDate(data){
     return data;
 }
 */
+
+
+// --------> MILESTONE 3 <---------
+
+//Funzione per assegnare i valori dei singoli quarter
+function graficoQuarter(variabileQuarti){
+    var labelQuarter = [];
+    var dataQuarter = [];
+
+    for (var key in variabileQuarti) {
+        labelQuarter.push(key);
+        dataQuarter.push(variabileQuarti[key]);
+    }
+    stampaGraficoQuarter(laberlQuarter, dataQuarter);
+};
+
+//Assegno i valori finali trovati, alla mia CHART per i valori dei quarter
+function stampaGraficoQuarter(laberlQuarter, dataQuarter);{
+
+}
