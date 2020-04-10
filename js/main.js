@@ -1,15 +1,3 @@
-// Gennaio: tot amount
-// Febbraio:  tot amount
-// Marzo:  tot amount
-// Aprile:  tot amount
-// Maggio:  tot amount
-// Giugno:  tot amount
-// Luglio:  tot amount
-// Agosto:  tot amount
-// Settembre:  tot amount
-// Ottobre:  tot amount
-// Novembre:  tot amount
-// Dicembre:  tot amount
 
 //--------> TROVO IL MIO URL DI BASE<---------
 var baseUrl = 'http://157.230.17.132:4014/sales';
@@ -29,7 +17,7 @@ function stampaGrafici(){
     });
 };
 
-//-------> ESTRAPOLO I CONTENUTI CHE MI SERVONO DALL'AJAX <----------
+//-------> ESTRAPOLO I CONTENUTI CHE MI SERVONO DALL'AJAX (GET) <----------
 function costruttoreData(data){
     //Creo le mie 2 variabili vuote che poi andrò a riempire
 
@@ -83,6 +71,7 @@ function costruttoreData(data){
         valoriFinaliVenditori(venditeVenditore, valoreTotale) // ------> Porto fuori la mia variabile per ciclare 'for in ' venditori e vendite <--------
 };
 
+// ---------> FUNZIONI EXTRA <----------
 //Ciclo il mio valore totale per avere la %
 function percent(totaleDati){
     var fatturato = 0; //Variabile vuota pari a 0, dove aggiungero il risulato e riporterò fuori con il return
@@ -93,7 +82,6 @@ function percent(totaleDati){
     }
     return fatturato;
 }
-
 
 //Ciclo per trovare i quarter
 function quarterData(ciclo){
@@ -122,7 +110,8 @@ function quarterData(ciclo){
     return quarterMonth;
 }
 
-//---------------> MESI E VENDITE <-----------------
+
+//---------------> GRAFICO MESI E VENDITE <-----------------
 
 //Funzione per trovare  i valori finali
 function valoriFinali(meseSomma){
@@ -156,7 +145,7 @@ function laMiaSomma(labels, data){
 };
 
 
-//---------------> VENDITORI E VENDITE <-----------------
+//---------------> GRAFICO VENDITORI E VENDITE <-----------------
 
 //Funzione per trovare i valori dei signoli venditori:
 function valoriFinaliVenditori(venditeVenditore, valoreTotale){
@@ -203,11 +192,47 @@ function laMiaSommaVenditori(labels2, data2){
 };
 
 
+// --------> GRAFICO VENDITE IN QUARTER (MILESTONE 3)<--------
+
+//Funzione per assegnare i valori dei singoli quarter
+function graficoQuarter(variabileQuarti){
+    var labelQuarter = [];
+    var dataQuarter = [];
+
+    for (var key in variabileQuarti) {
+        labelQuarter.push(key);
+        dataQuarter.push(variabileQuarti[key]);
+    }
+    stampaGraficoQuarter(labelQuarter, dataQuarter);
+};
+
+//Assegno i valori finali trovati, alla mia CHART per i valori dei quarter
+function stampaGraficoQuarter(labelQ, dataQ){
+    var ctx = $('#grafico-bar');
+    var chart = new Chart(ctx, {
+
+        type: 'bar',
+        data: {
+            datasets: [{
+                data: dataQ,
+                backgroundColor: ['lightblue', 'lightblue', 'lightblue', 'lightblue']
+            }],
+
+            labels: labelQ
+        },
+        options: {
+            title: {
+            display: true,
+            text: 'Fatturato per quarter'
+        }
+    }
+    })
+};
+
 
 //--------> MILESTONE 2 <-----------
 
 //Confronto i miei venditori con il mio select, e poi gli assegno il valore da aggiungere
-
 $('#press').click(function(){
     var selectedSeller = $(".seller-type").val();// Il valore (nome venditore) di selected seller
     notSelectedSeller(selectedSeller); //Controllo sul venditore scelto
@@ -240,6 +265,7 @@ function operazione(sceltaVenditore, value, date){
 function costruttoreModify(modify){
     $('#grafico').replaceWith('<canvas id="grafico"></canvas>');
     $('#grafico-torta').replaceWith('<canvas id="grafico-torta"></canvas>');
+    $('#grafico-bar').replaceWith('<canvas id="grafico-bar"></canvas>');
     stampaGrafici();
 };
 
@@ -273,7 +299,7 @@ function notDate(data){
 */
 
 
-// --------> MILESTONE 3 <---------
+// --------> VENDITE IN QUARTER (MILESTONE 3)<--------
 
 //Funzione per assegnare i valori dei singoli quarter
 function graficoQuarter(variabileQuarti){
@@ -284,10 +310,28 @@ function graficoQuarter(variabileQuarti){
         labelQuarter.push(key);
         dataQuarter.push(variabileQuarti[key]);
     }
-    stampaGraficoQuarter(laberlQuarter, dataQuarter);
+    stampaGraficoQuarter(labelQuarter, dataQuarter);
 };
 
 //Assegno i valori finali trovati, alla mia CHART per i valori dei quarter
-function stampaGraficoQuarter(laberlQuarter, dataQuarter);{
+function stampaGraficoQuarter(labelQ, dataQ){
+    var ctx = $('#grafico-bar');
+    var chart = new Chart(ctx, {
 
-}
+        type: 'bar',
+        data: {
+            datasets: [{
+                data: dataQ,
+                backgroundColor: ['lightblue', 'lightblue', 'lightblue', 'lightblue']
+            }],
+
+            labels: labelQ
+        },
+        options: {
+            title: {
+            display: true,
+            text: 'Fatturato per quarter'
+        }
+    }
+    })
+};

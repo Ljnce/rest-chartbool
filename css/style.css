@@ -18,7 +18,8 @@
 }
 
 #grafico,
-#grafico-torta{
+#grafico-torta,
+#grafico-bar{
     height: 250px;
 }
 
@@ -31,6 +32,14 @@
     flex-wrap: wrap;
 }
 
+.container-bar{
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
 
 .tasti{
     height: 100px;
