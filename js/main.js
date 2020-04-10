@@ -176,7 +176,7 @@ function laMiaSommaVenditori(labels2, data2, bkColor){
         options: {
             title: {
             display: true,
-            text: 'Guadagni di ogni singolo venditore (2017)'
+            text: 'Guadagni singoli venditori'
             },
         responsive: true,
                 tooltips: {
@@ -241,7 +241,8 @@ $('#press').click(function(){
     wrongDate(date) // Controllo su data < o > 2017
     var dataForma = moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY'); //Trasformo data che è in YYYY-MM-DD, in DD/MM/YYYY così che sia leggibile dal sistema
     $('#value').val('');
-    $('#date').val('');
+    $('#date').val('2017-01-01');
+    $(".seller-type").val('scegli');
     operazione(selectedSeller, value, dataForma);
 });
 
@@ -283,7 +284,7 @@ function notSelectedSeller(value){
 /*
 //Se non si inserisce nessuna cifra:
 function notValue(valore) {
-    if (valore.lenght == undefined) {
+    if (valore == "NaN") {
         alert('Inserisci una cifra');
     }
     return valore;
