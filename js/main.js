@@ -270,7 +270,7 @@ function polarChartValue(labelP, dataP){
         data: {
             datasets: [{
                 data: dataP,
-                backgroundColor: ['#ffe6e6', '#9999ff', '#cc99ff', '#8c8cd9']
+                backgroundColor: ['#ffe6e6', '#9999ff', '#cc99ff', '#8c8cd9'],
             }],
 
             labels: labelP
