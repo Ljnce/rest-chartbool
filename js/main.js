@@ -112,7 +112,7 @@ function quarterData(ciclo){
 }
 
 
-//---------------> GRAFICO MESI E VENDITE <-----------------
+//---------------> GRAFICO MESI E VENDITE (LINE)<-----------------
 
 //Funzione per trovare  i valori finali
 function valoriFinali(meseSomma){
@@ -136,8 +136,8 @@ function laMiaSomma(labels, data){
         data: {
             labels: labels, //riporto il mio valore del mese
             datasets: [{
-                label: 'Database incassi annuali 2017',
-                backgroundColor: 'orange',
+                label: 'Database incassi annuali',
+                backgroundColor: '#ffcc80',
                 borderColor: 'orange',
                 data: data //riporto il mio valore dei valori
             }]
@@ -146,13 +146,13 @@ function laMiaSomma(labels, data){
 };
 
 
-//---------------> GRAFICO VENDITORI E VENDITE <-----------------
+//---------------> GRAFICO VENDITORI E VENDITE (PIE)<-----------------
 
 //Funzione per trovare i valori dei signoli venditori:
 function valoriFinaliVenditori(venditeVenditore, valoreTotale){
     var labelsVenditoreChart = [];
     var dataVenditoreChart = [];
-    var backgroundColor = ['red', 'lightgreen', 'lightblue', 'yellow']
+    var backgroundColor = ['#ff9980', 'lightgreen', 'lightblue', '#ffff80']
 
     for (var key in venditeVenditore) {
         labelsVenditoreChart.push(key);
@@ -179,7 +179,7 @@ function laMiaSommaVenditori(labels2, data2, bkColor){
         options: {
             title: {
             display: true,
-            text: 'Guadagni singoli venditori'
+            text: 'Guadagni singoli venditori in %'
             },
         responsive: true,
                 tooltips: {
@@ -194,7 +194,7 @@ function laMiaSommaVenditori(labels2, data2, bkColor){
 };
 
 
-// --------> GRAFICO VENDITE IN QUARTER (MILESTONE 3)<--------
+// --------> GRAFICO VENDITE IN QUARTER (BAR)(MILESTONE 3)<--------
 
 //Funzione per assegnare i valori dei singoli quarter
 function graficoQuarter(variabileQuarti){
@@ -232,7 +232,7 @@ function stampaGraficoQuarter(labelQ, dataQ){
 };
 
 
-//--------> GRAFIO POLAR CON VENDITE DEI VENDITORI <-------
+//--------> GRAFIO POLAR CON VENDITE DEI VENDITORI (POLARAREA) <-------
 
 //Trovo i miei dati tramite la variabile polarMix
 function polarData(iMieiDati){
@@ -270,7 +270,7 @@ function polarChartValue(labelP, dataP){
         data: {
             datasets: [{
                 data: dataP,
-                backgroundColor: ['red', 'blue', 'orange', 'pink']
+                backgroundColor: ['#ffe6e6', '#9999ff', '#cc99ff', '#8c8cd9']
             }],
 
             labels: labelP
