@@ -9,7 +9,16 @@ function stampaGrafici(){
         url: baseUrl,
         method: 'GET',
         success: function(data){
-            costruttoreData(data);
+
+            graficoBar(data); //Grafico 1
+
+            graficoPie(data); //Grafico 2
+
+            //Grafico 3 utilizzando il RETURN
+            var quarter = quarterData(data); //Mi faccio tornare i valori giusti sulla mia variabile quarter
+            graficoQuarter(quarter); //Richiamo la varibile quarter con i miei valori, per poi ciclarla in for in
+
+            polarData(data); // Grafico 4
         },
         error: function(){
             alert('errore');
@@ -17,10 +26,10 @@ function stampaGrafici(){
     });
 };
 
-//-------> ESTRAPOLO I CONTENUTI CHE MI SERVONO DALL'AJAX (GET) <----------
-function costruttoreData(data){
-    //Creo le mie 2 variabili vuote che poi andrò a riempire
+//---------------> GRAFICO MESI E VENDITE (LINE)<-----------------
 
+//Ciclo per trovare i valori
+function graficoBar(data){
     var meseSomma = {
         'gennaio': 0,
         'febbraio': 0,
@@ -36,83 +45,17 @@ function costruttoreData(data){
         'dicembre': 0
     }; //Prendo i valori in ordine e ci aggiungo i risultati corrispondenti
 
-    var venditeVenditore = {}; //Valore vuoto per i venditori
-
-    var quarter = quarterData(data); //Mi faccio tornare i valori giusti sulla mia variabile quarter
-    graficoQuarter(quarter); //Richiamo la varibile quarter con i miei valori, per poi ciclarla in for in
-
-    var polar = polarData(data);
-    pushPolarChart(polar);
-
-    var valoreTotale = percent(data); // Trovo il valore totale con una funzione, per la %.
-    console.log(valoreTotale);
-
-    //Estrapolo da data i valori che mi servono per le miei 2 variabili vuote
     var dati = data; // ho i miei dati
     for (var i = 0; i < dati.length; i++) {
         var dato = dati[i]; //estrapolo i singoli dati
         var valore = parseInt(dato.amount); //Trovo i valori
-        var venditore = dato.salesman; //Trovo i nomi dei venditori
-
         var mese = dato.date; // Trovo le date
         var thisMonth = moment(mese, 'DD/MM/YYYY').format("MMMM"); //Trovo solo i MESI dalle date, estrapolo da mese (DD/MM/YYYY), solo i nomi dei mesi .format('MMMM')
 
-        //var thisNumberMonth = moment(mese, 'DD/MM/YYYY').format("M") % 3;// Trovo il mese numerato
-
-        //Mesi e vendite
         meseSomma[thisMonth] += valore; //ogni volta sovrascrivo in ordine e sommo con += tutti i valori
-
-        //Venditori e vendite
-        if (venditeVenditore[venditore] === undefined) { // Se === a indefinito, allora....
-            venditeVenditore[venditore] = 0; //il valore sarà pari a 0, quindi lo creo per poi fare in modo che si riempia dei valori
-        }
-        venditeVenditore[venditore] += valore;
-        //console.log(meseSomma[thisMonth]) ---> Mi trova tutti i valori dei signoli soggetti
     }
-        valoriFinali(meseSomma) //--------> Porto fuori la mia variabile per ciclare 'for in ' mesi e vendite <---------
-        valoriFinaliVenditori(venditeVenditore, valoreTotale) // ------> Porto fuori la mia variabile per ciclare 'for in ' venditori e vendite <--------
-};
-
-// ---------> FUNZIONI EXTRA <----------
-//Ciclo il mio valore totale per avere la %
-function percent(totaleDati){
-    var fatturato = 0; //Variabile vuota pari a 0, dove aggiungero il risulato e riporterò fuori con il return
-    for (var i = 0; i < totaleDati.length; i++) {
-        var datoSingolo = totaleDati[i];
-        var valoreDato = datoSingolo.amount;
-        fatturato += parseInt(valoreDato);
-    }
-    return fatturato;
+    valoriFinali(meseSomma) //--------> Porto fuori la mia variabile per ciclare 'for in ' mesi e vendite <---------
 }
-
-//Ciclo per trovare i quarter
-function quarterData(ciclo){
-    var quarterMonth = {
-        'q1':0,
-        'q2':0,
-        'q3':0,
-        'q4':0
-    }; //Grafico 3
-    for (var i = 0; i < ciclo.length; i++) {
-        var cicli = ciclo[i];
-        var valoreDato = cicli.amount;
-        var meseQ = cicli.date;
-        var thisQuarterMonth = moment(meseQ, 'DD/MM/YYYY').format("M");
-        if (thisQuarterMonth <= 3) {
-            quarterMonth['q1'] += parseInt(valoreDato);
-        } else if (thisQuarterMonth > 3 && thisQuarterMonth <= 6)  {
-            quarterMonth['q2'] += parseInt(valoreDato);
-        } else if (thisQuarterMonth > 6 && thisQuarterMonth <= 9)  {
-            quarterMonth['q3'] += parseInt(valoreDato);
-        } else if (thisQuarterMonth > 9 && thisQuarterMonth <= 12)  {
-            quarterMonth['q4'] += parseInt(valoreDato);
-        }
-    }
-    return quarterMonth;
-}
-
-
-//---------------> GRAFICO MESI E VENDITE (LINE)<-----------------
 
 //Funzione per trovare  i valori finali
 function valoriFinali(meseSomma){
@@ -147,6 +90,36 @@ function laMiaSomma(labels, data){
 
 
 //---------------> GRAFICO VENDITORI E VENDITE (PIE)<-----------------
+
+//Ciclo per trovare i valori
+function graficoPie(data){
+    var venditeVenditore = {}; //Valore vuoto per i venditori
+    var valoreTotale = percent(data); // Trovo il valore totale con una funzione, per la %.
+    console.log(valoreTotale);
+
+    var dati = data; // ho i miei dati
+    for (var i = 0; i < dati.length; i++) {
+        var dato = dati[i]; //estrapolo i singoli dati
+        var valore = parseInt(dato.amount); //Trovo i valori
+        var venditore = dato.salesman; //Trovo i nomi dei venditori
+        if (venditeVenditore[venditore] === undefined) { // Se === a indefinito, allora....
+            venditeVenditore[venditore] = 0; //il valore sarà pari a 0, quindi lo creo per poi fare in modo che si riempia dei valori
+        }
+        venditeVenditore[venditore] += valore;
+    }
+    valoriFinaliVenditori(venditeVenditore, valoreTotale) // ------> Porto fuori la mia variabile per ciclare 'for in ' venditori e vendite <--------
+}
+
+//Ciclo il mio valore totale per avere la %
+function percent(totaleDati){
+    var fatturato = 0; //Variabile vuota pari a 0, dove aggiungero il risulato e riporterò fuori con il return
+    for (var i = 0; i < totaleDati.length; i++) {
+        var datoSingolo = totaleDati[i];
+        var valoreDato = datoSingolo.amount;
+        fatturato += parseInt(valoreDato);
+    }
+    return fatturato;
+}
 
 //Funzione per trovare i valori dei signoli venditori:
 function valoriFinaliVenditori(venditeVenditore, valoreTotale){
@@ -195,6 +168,32 @@ function laMiaSommaVenditori(labels2, data2, bkColor){
 
 
 // --------> GRAFICO VENDITE IN QUARTER (BAR)(MILESTONE 3)<--------
+
+//Ciclo per trovare i quarter
+function quarterData(ciclo){
+    var quarterMonth = {
+        'q1':0,
+        'q2':0,
+        'q3':0,
+        'q4':0
+    }; //Grafico 3
+    for (var i = 0; i < ciclo.length; i++) {
+        var cicli = ciclo[i];
+        var valoreQ = cicli.amount;
+        var meseQ = cicli.date;
+        var thisQuarterMonth = moment(meseQ, 'DD/MM/YYYY').format("M");
+        if (thisQuarterMonth <= 3) {
+            quarterMonth['q1'] += parseInt(valoreQ);
+        } else if (thisQuarterMonth > 3 && thisQuarterMonth <= 6)  {
+            quarterMonth['q2'] += parseInt(valoreQ);
+        } else if (thisQuarterMonth > 6 && thisQuarterMonth <= 9)  {
+            quarterMonth['q3'] += parseInt(valoreQ);
+        } else if (thisQuarterMonth > 9 && thisQuarterMonth <= 12)  {
+            quarterMonth['q4'] += parseInt(valoreQ);
+        }
+    }
+    return quarterMonth;
+}
 
 //Funzione per assegnare i valori dei singoli quarter
 function graficoQuarter(variabileQuarti){
@@ -246,7 +245,7 @@ function polarData(iMieiDati){
         }
         polarMix[venditoriPolar] += parseInt(cifrePolar)
     }
-    return polarMix;
+    pushPolarChart(polarMix)
 }
 
 //Trovo i valori da pushare nell'array per dargli in pasto al grafico che li leggerà
